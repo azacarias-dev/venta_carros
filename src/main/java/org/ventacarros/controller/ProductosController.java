@@ -1,11 +1,13 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+ */
 package org.ventacarros.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
 import org.ventacarros.system.Main;
 
 /**
@@ -13,26 +15,14 @@ import org.ventacarros.system.Main;
  *
  * @author informatica
  */
-public class InicioController implements Initializable {
-    
+public class ProductosController implements Initializable {
+
     private Main principal;
-    
-    @FXML
-    private Button btnIngresar;
 
     public void setPrincipal(Main principal) {
         this.principal = principal;
     }
     
-    @FXML
-    private void Ingresar(ActionEvent evento){
-        if (evento.getSource() == btnIngresar) {
-            principal.Productos();
-        }
-    }
-    
-    
-
     /**
      * Initializes the controller class.
      */
@@ -40,5 +30,10 @@ public class InicioController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+    
+    @FXML
+    private void regresar(){
+        principal.Inicio();
+    }
     
 }
