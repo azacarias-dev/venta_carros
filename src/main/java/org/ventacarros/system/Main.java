@@ -9,6 +9,7 @@ import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.ventacarros.controller.InicioController;
+import org.ventacarros.controller.ProductosController;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -31,7 +32,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         this.escenarioPrincipal = stage;
-        Inicio();
+        Productos();
         escenarioPrincipal.setTitle("Inicio");
         escenarioPrincipal.show();
     }
@@ -55,8 +56,18 @@ public class Main extends Application {
     
     public void Inicio(){
         try {
-            InicioController ic = (InicioController) cambiarEscena("InicioView.fxml", 400, 600);
+            InicioController ic = (InicioController) cambiarEscena("InicioView.fxml", 600, 400);
             ic.setPrincipal(this);
+        } catch (Exception e) {
+            System.out.println("Error al cambiar escena");
+            e.printStackTrace();
+        }
+    }
+    
+    public void Productos(){
+        try {
+            ProductosController pc = (ProductosController) cambiarEscena("ProductosView.fxml", 600, 400);
+            pc.setPrincipal(this);
         } catch (Exception e) {
             System.out.println("Error al cambiar escena");
             e.printStackTrace();
