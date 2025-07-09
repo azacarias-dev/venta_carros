@@ -1,0 +1,13 @@
+nbproject/private/
+build/
+dist/
+nbbuild/
+nbdist/
+*.bak
+
+*.class
+*.jar
+*.war
+*.ear
+
+target/
