@@ -32,7 +32,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         this.escenarioPrincipal = stage;
-        Productos();
+        Inicio();
         escenarioPrincipal.setTitle("Inicio");
         escenarioPrincipal.show();
     }
