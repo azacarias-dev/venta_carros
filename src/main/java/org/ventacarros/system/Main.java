@@ -8,6 +8,8 @@ import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.ventacarros.controller.ClientesVController;
+import org.ventacarros.controller.ComprasController;
 import org.ventacarros.controller.InicioController;
 import org.ventacarros.controller.ProductosController;
 
@@ -70,6 +72,26 @@ public class Main extends Application {
             pc.setPrincipal(this);
         } catch (Exception e) {
             System.out.println("Error al cambiar escena");
+            e.printStackTrace();
+        }
+    }
+    
+    public void Clientes(){
+        try {
+            ClientesVController cc = (ClientesVController) cambiarEscena("ClientesView.fxml", 600, 400);
+            cc.setPrincipal(this);
+        } catch (Exception e) {
+            System.out.println("Error al cambiar de escena");
+            e.printStackTrace();
+        }
+    }
+    
+    public void Compras(){
+        try {
+            ComprasController coc = (ComprasController) cambiarEscena("ComprasView.fxml", 600, 400);
+            coc.setPrincipal(this);
+        } catch (Exception e) {
+            System.out.println("Error al cambiar de escena");
             e.printStackTrace();
         }
     }
