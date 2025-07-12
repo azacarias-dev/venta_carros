@@ -7,6 +7,7 @@ package org.ventacarros.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
+import org.ventacarros.system.Main;
 
 /**
  * FXML Controller class
@@ -15,6 +16,12 @@ import javafx.fxml.Initializable;
  */
 public class ComprasController implements Initializable {
 
+    private Main principal;
+
+    public void setPrincipal(Main principal) {
+        this.principal = principal;
+    }
+    
     /**
      * Initializes the controller class.
      */
