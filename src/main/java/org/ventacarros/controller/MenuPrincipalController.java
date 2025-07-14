@@ -6,7 +6,11 @@ package org.ventacarros.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import org.ventacarros.system.Main;
 
 /**
  * FXML Controller class
@@ -15,6 +19,14 @@ import javafx.fxml.Initializable;
  */
 public class MenuPrincipalController implements Initializable {
 
+    private Main principal;
+    @FXML
+    private Button btnRegresar, btnClientes, btnCompras, btnProductos;
+    
+    public void setPrincipal(Main principal) {
+        this.principal = principal;
+    }
+    
     /**
      * Initializes the controller class.
      */
@@ -22,5 +34,18 @@ public class MenuPrincipalController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+    
+    @FXML
+    private void clickHandlerAction (ActionEvent evento){
+        if (evento.getSource() == btnRegresar){
+            principal.Inicio();
+        } else if (evento.getSource() == btnClientes){
+            principal.Clientes();
+        } else if (evento.getSource() == btnProductos){
+            principal.Productos();
+        } else if (evento.getSource() == btnCompras){
+            principal.Compras();
+        }
+    }
     
 }
