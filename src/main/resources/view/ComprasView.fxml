@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="527.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ventacarros.controller.ComprasController">
+<BorderPane prefHeight="527.0" prefWidth="900.0" styleClass="border-pane" stylesheets="@ComprasView.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ventacarros.controller.ComprasController">
    <center>
       <VBox spacing="10.0" VBox.vgrow="ALWAYS">
          <padding>
@@ -94,7 +94,7 @@
                         <Button fx:id="btnRegresar" maxHeight="40.0" maxWidth="100.0" mnemonicParsing="false" onAction="#clickActionHandler" text="Regresar" HBox.hgrow="SOMETIMES" />
                         <Label alignment="TOP_CENTER" text="COMPRAS">
                            <font>
-                              <Font name="System Bold" size="24.0" />
+                              <Font name="System Bold" size="36.0" />
                            </font>
                         </Label>
                      </children>

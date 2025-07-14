@@ -12,13 +12,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ventacarros.controller.InicioController">
+<BorderPane styleClass="border-pane" stylesheets="@inicioview.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ventacarros.controller.InicioController">
    <top>
-      <VBox alignment="BOTTOM_CENTER" prefHeight="104.0" spacing="10.0" BorderPane.alignment="BOTTOM_CENTER">
+      <VBox alignment="BOTTOM_CENTER" prefHeight="167.0" prefWidth="324.0" spacing="10.0" BorderPane.alignment="BOTTOM_CENTER">
          <children>
             <HBox alignment="CENTER">
                <children>
-                  <Label alignment="BOTTOM_CENTER" text="Bienvenidos a">
+                  <Label fx:id="labelTitulo" alignment="BOTTOM_CENTER" text="Bienvenidos a">
                      <font>
                         <Font name="System Bold" size="48.0" />
                      </font>
@@ -28,7 +28,7 @@
             </HBox>
             <HBox alignment="CENTER">
                <children>
-                  <Label alignment="BOTTOM_CENTER" text="Sport Carts">
+                  <Label fx:id="labelTitulo" alignment="BOTTOM_CENTER" text="Sport Carts">
                      <font>
                         <Font name="System Bold" size="48.0" />
                      </font>

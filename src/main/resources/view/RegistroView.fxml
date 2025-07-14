@@ -12,22 +12,22 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ventacarros.controller.RegistroController">
+<BorderPane styleClass="border-pane" stylesheets="@registroview.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ventacarros.controller.RegistroController">
    <top>
-      <VBox alignment="BOTTOM_CENTER" prefHeight="104.0" spacing="10.0" BorderPane.alignment="BOTTOM_CENTER" VBox.vgrow="NEVER">
+      <VBox alignment="BOTTOM_CENTER" prefHeight="192.0" prefWidth="314.0" spacing="10.0" BorderPane.alignment="BOTTOM_CENTER" VBox.vgrow="NEVER">
          <children>
-            <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+            <HBox alignment="CENTER" prefHeight="117.0" prefWidth="314.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label alignment="BOTTOM_CENTER" text="Registro de">
+                  <Label fx:id="labelTitulo" alignment="BOTTOM_CENTER" prefHeight="87.0" prefWidth="283.0" text="Registro de">
                      <font>
                         <Font name="System Bold" size="48.0" />
                      </font>
                   </Label>
                </children>
             </HBox>
-            <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+            <HBox alignment="CENTER" prefHeight="105.0" prefWidth="314.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label alignment="BOTTOM_CENTER" text="Sport Carts">
+                  <Label fx:id="labelTitulo" alignment="BOTTOM_CENTER" prefHeight="67.0" prefWidth="279.0" text="Sport Carts">
                      <font>
                         <Font name="System Bold" size="48.0" />
                      </font>
@@ -46,7 +46,7 @@
    <center>
       <VBox alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
-            <GridPane alignment="CENTER" hgap="10.0" maxWidth="450" vgap="20.0">
+            <GridPane alignment="CENTER" hgap="10.0" maxWidth="450" stylesheets="@registroview.css" vgap="20.0">
                <columnConstraints>
                   <ColumnConstraints halignment="CENTER" minWidth="100.0" />
                   <ColumnConstraints halignment="CENTER" minWidth="200.0" />
@@ -57,7 +57,7 @@
                   <Label text="Apellido:" GridPane.rowIndex="1" />
                   <TextField fx:id="txtApellido" maxWidth="400.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label text="Telefono:" GridPane.rowIndex="2" />
-                  <Label prefWidth="47.0" text="Correo:" GridPane.rowIndex="3" />
+                  <Label prefHeight="30.0" prefWidth="68.0" text="Correo:" GridPane.rowIndex="3" />
                   <Label text="Nit:" GridPane.rowIndex="4" />
                   <Label text="Contraseña:" GridPane.rowIndex="5" />
                   <TextField fx:id="txtTelefono" maxWidth="400.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -87,8 +87,8 @@
             </HBox>
             <HBox alignment="TOP_CENTER" prefHeight="40.0" prefWidth="314.0" spacing="20.0">
                <children>
-                  <Button maxHeight="50.0" maxWidth="150.0" onAction="#regresar" text="Regresar" HBox.hgrow="SOMETIMES" />
-                  <Button maxHeight="50.0" maxWidth="150.0" onAction="#Registrarse" text="Registrarse" HBox.hgrow="SOMETIMES" />
+                  <Button maxHeight="50.0" maxWidth="150.0" onAction="#regresar" stylesheets="@registroview.css" text="Regresar" HBox.hgrow="SOMETIMES" />
+                  <Button maxHeight="50.0" maxWidth="150.0" onAction="#Registrarse" stylesheets="@registroview.css" text="Registrarse" HBox.hgrow="SOMETIMES" />
                </children>
             </HBox>
          </children>
