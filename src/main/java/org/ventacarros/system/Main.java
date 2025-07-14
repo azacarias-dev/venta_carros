@@ -8,7 +8,12 @@ import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.ventacarros.controller.ClientesVController;
+import org.ventacarros.controller.ComprasController;
 import org.ventacarros.controller.InicioController;
+import org.ventacarros.controller.MenuPrincipalController;
+import org.ventacarros.controller.ProductosController;
+import org.ventacarros.controller.RegistroController;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -47,7 +52,8 @@ public class Main extends Application {
         escena = new Scene(cargadorFXML.load(archivoFXML), ancho, alto);
         escenarioPrincipal.setScene(escena);
         escenarioPrincipal.sizeToScene();
-
+        escenarioPrincipal.setFullScreen(true);
+        escenarioPrincipal.setFullScreenExitHint("");
         interfazCargada = cargadorFXML.getController();
 
         return interfazCargada;
@@ -55,8 +61,64 @@ public class Main extends Application {
     
     public void Inicio(){
         try {
-            InicioController ic = (InicioController) cambiarEscena("InicioView.fxml", 400, 600);
+            InicioController ic = (InicioController) cambiarEscena("InicioView.fxml", 414, 473);
             ic.setPrincipal(this);
+            escenarioPrincipal.centerOnScreen();
+        } catch (Exception e) {
+            System.out.println("Error al cambiar escena");
+            e.printStackTrace();
+        }
+    }
+    
+    public void Productos(){
+        try {
+            ProductosController pc = (ProductosController) cambiarEscena("ProductosView.fxml", 900, 527);
+            pc.setPrincipal(this);
+            escenarioPrincipal.centerOnScreen();
+        } catch (Exception e) {
+            System.out.println("Error al cambiar escena");
+            e.printStackTrace();
+        }
+    }
+    
+    public void Clientes(){
+        try {
+            ClientesVController cc = (ClientesVController) cambiarEscena("ClientesView.fxml", 900, 527);
+            cc.setPrincipal(this);
+            escenarioPrincipal.centerOnScreen();
+        } catch (Exception e) {
+            System.out.println("Error al cambiar de escena");
+            e.printStackTrace();
+        }
+    }
+    
+    public void Compras(){
+        try {
+            ComprasController coc = (ComprasController) cambiarEscena("ComprasView.fxml", 900, 527);
+            coc.setPrincipal(this);
+            escenarioPrincipal.centerOnScreen();
+        } catch (Exception e) {
+            System.out.println("Error al cambiar de escena");
+            e.printStackTrace();
+        }
+    }
+    
+    public void MenuPrincipal(){
+        try {
+            MenuPrincipalController mcp = (MenuPrincipalController) cambiarEscena("MenuPrincipal.fxml", 819, 527);
+            mcp.setPrincipal(this);
+            escenarioPrincipal.centerOnScreen();
+        } catch (Exception e) {
+            System.out.println("Error al cargar escena");
+            e.printStackTrace();
+        }
+    }
+    
+    public void Registrarse(){
+        try {
+            RegistroController rc = (RegistroController) cambiarEscena("RegistroView.fxml", 414, 643);
+            rc.setPrincipal(this);
+            escenarioPrincipal.centerOnScreen();
         } catch (Exception e) {
             System.out.println("Error al cambiar escena");
             e.printStackTrace();

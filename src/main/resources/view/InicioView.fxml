@@ -1,14 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ventacarros.controller.InicioController">
-    <stylesheets>
-        <URL value="@/view/inicioview.css"/>
-    </stylesheets>
-</AnchorPane>
+<BorderPane styleClass="border-pane" stylesheets="@inicioview.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ventacarros.controller.InicioController">
+   <top>
+      <VBox alignment="BOTTOM_CENTER" prefHeight="167.0" prefWidth="324.0" spacing="10.0" BorderPane.alignment="BOTTOM_CENTER">
+         <children>
+            <HBox alignment="CENTER">
+               <children>
+                  <Label fx:id="labelTitulo" alignment="BOTTOM_CENTER" text="Bienvenidos a">
+                     <font>
+                        <Font name="System Bold" size="48.0" />
+                     </font>
+                  </Label>
+               </children>
+               <HBox.hgrow>ALWAYS</HBox.hgrow>
+            </HBox>
+            <HBox alignment="CENTER">
+               <children>
+                  <Label fx:id="labelTitulo" alignment="BOTTOM_CENTER" text="Sport Carts">
+                     <font>
+                        <Font name="System Bold" size="48.0" />
+                     </font>
+                  </Label>
+               </children>
+               <HBox.hgrow>ALWAYS</HBox.hgrow>
+            </HBox>
+         </children>
+         <padding>
+            <Insets top="20.0" />
+         </padding>
+         <VBox.vgrow>NEVER</VBox.vgrow>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </VBox>
+   </top>
+
+   <center>
+      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+      <children>
+         <GridPane alignment="CENTER" hgap="10.0" maxWidth="450" vgap="50.0">
+            <columnConstraints>
+               <ColumnConstraints halignment="CENTER" minWidth="100.0" />
+               <ColumnConstraints halignment="CENTER" minWidth="200.0" />
+            </columnConstraints>
+            <children>
+               <Label text="Correo:" />
+               <TextField fx:id="txtCorreo" maxWidth="400.0" GridPane.columnIndex="1" />
+
+               <Label text="Contraseña:" GridPane.rowIndex="1" />
+               <TextField fx:id="txtContraseña" maxWidth="400.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            </children>
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+               </rowConstraints>
+         </GridPane>
+      </children>
+   </VBox>
+   </center>
+
+   <bottom>
+      <VBox spacing="20.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="30.0" prefWidth="314.0">
+               <children>
+                  <Label fx:id="lblFelicidades" text="Datos incorrectos" textFill="#b20202" visible="false" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="73.0" prefWidth="314.0" spacing="50.0">
+               <children>
+                  <Button maxHeight="50.0" maxWidth="150.0" onAction="#Login" text="Ingresar">
+                     <HBox.hgrow>SOMETIMES</HBox.hgrow>
+                  </Button>
+                  <Button fx:id="btnRegistrarse" maxHeight="50.0" maxWidth="150.0" onAction="#Ingresar" text="Registrarse">
+                     <HBox.hgrow>SOMETIMES</HBox.hgrow>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+         <VBox.vgrow>ALWAYS</VBox.vgrow>
+         <padding>
+            <Insets bottom="20.0" top="10.0" />
+         </padding>
+      </VBox>
+   </bottom>
+   <padding>
+      <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+   </padding>
+</BorderPane>
