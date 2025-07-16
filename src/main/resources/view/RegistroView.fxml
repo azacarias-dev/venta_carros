@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -63,7 +64,7 @@
                   <TextField fx:id="txtTelefono" maxWidth="400.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <TextField fx:id="txtCorreo" maxWidth="400.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <TextField fx:id="txtNit" maxWidth="400.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <TextField fx:id="txtContraseña" maxWidth="400.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <PasswordField fx:id="txtContraseña" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                </children>
                <rowConstraints>
                   <RowConstraints />
