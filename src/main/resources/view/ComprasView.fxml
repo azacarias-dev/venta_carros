@@ -28,10 +28,10 @@
                <children>
                   <TableView fx:id="tablaCompras" prefHeight="240.0" prefWidth="763.0">
                      <columns>
-                        <TableColumn fx:id="colId" prefWidth="158.0" text="ID" />
-                        <TableColumn fx:id="colFecha" prefWidth="146.0" text="FECHA" />
-                        <TableColumn fx:id="colIdProducto" prefWidth="226.0" text="ID PRODUCTO" />
-                        <TableColumn fx:id="colSubtotal" prefWidth="232.0" text="SUBTOTAL" />
+                        <TableColumn fx:id="colId" prefWidth="57.0" text="ID" />
+                        <TableColumn fx:id="colFecha" prefWidth="223.0" text="FECHA" />
+                        <TableColumn fx:id="colSubtotal" prefWidth="218.0" text="SUBTOTAL" />
+                        <TableColumn fx:id="colIdProducto" prefWidth="264.0" text="ID PRODUCTO" />
                      </columns>
                   </TableView>
                </children>
