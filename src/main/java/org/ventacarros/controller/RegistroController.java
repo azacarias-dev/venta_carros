@@ -8,11 +8,14 @@ import java.net.URL;
 import java.sql.CallableStatement;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import org.ventacarros.database.Conexion;
 import org.ventacarros.model.Cliente;
 import org.ventacarros.system.Main;
@@ -36,7 +39,8 @@ public class RegistroController implements Initializable {
     private TextField txtNombre, txtApellido, txtTelefono, txtCorreo, txtNit, txtContraseña;
     @FXML
     private Label lblFelicidades;
-
+    private Timeline timeline;
+    
     /**
      * Initializes the controller class.
      */
@@ -103,10 +107,21 @@ public class RegistroController implements Initializable {
             lblFelicidades.setText("Llena todos los campos");
             lblFelicidades.setTextFill(Color.RED);
             lblFelicidades.setVisible(true);
+            timeline = new Timeline(new KeyFrame(Duration.seconds(3), eh -> {
+                lblFelicidades.setVisible(false);
+            }));
+            timeline.setCycleCount(1);
+            timeline.play();
         } else {
             agregarClientes();
             lblFelicidades.setText("¡Agregado con exito!");
+            lblFelicidades.setTextFill(Color.GREEN);
             lblFelicidades.setVisible(true);
+            timeline = new Timeline(new KeyFrame(Duration.seconds(3), eh -> {
+                lblFelicidades.setVisible(false);
+            }));
+            timeline.setCycleCount(1);
+            timeline.play();
         }
     }
 }
