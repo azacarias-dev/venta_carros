@@ -31,6 +31,11 @@ public class Main extends Application {
     private Scene escena;
     private Cliente clienteActivo;
 
+    public Stage getEscenarioPrincipal() {
+        return escenarioPrincipal;
+    }
+
+    
     public Cliente getClienteActivo() {
         return clienteActivo;
     }
