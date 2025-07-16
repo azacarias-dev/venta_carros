@@ -14,6 +14,7 @@ import org.ventacarros.controller.InicioController;
 import org.ventacarros.controller.MenuPrincipalController;
 import org.ventacarros.controller.ProductosController;
 import org.ventacarros.controller.RegistroController;
+import org.ventacarros.model.Cliente;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -28,6 +29,15 @@ public class Main extends Application {
     private final String URL = "/view/";
     private Stage escenarioPrincipal;
     private Scene escena;
+    private Cliente clienteActivo;
+
+    public Cliente getClienteActivo() {
+        return clienteActivo;
+    }
+
+    public void setClienteActivo(Cliente clienteActivo) {
+        this.clienteActivo = clienteActivo;
+    }
     
     public static void main(String[] args) {
         launch(args);
