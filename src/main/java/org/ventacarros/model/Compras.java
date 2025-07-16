@@ -11,13 +11,16 @@ import java.time.LocalDate;
  * @author Zacarias
  */
 public class Compras {
+
     private int id;
+    private int idCliente;
     private LocalDate fechaCompra;
     private int idProducto;
     private Double subtotal;
 
-    public Compras(int id, LocalDate fechaCompra, int idProducto, Double subtotal) {
+    public Compras(int id, int idCliente, LocalDate fechaCompra, int idProducto, Double subtotal) {
         this.id = id;
+        this.idCliente = idCliente;
         this.fechaCompra = fechaCompra;
         this.idProducto = idProducto;
         this.subtotal = subtotal;
@@ -54,6 +57,5 @@ public class Compras {
     public void setSubtotal(Double subtotal) {
         this.subtotal = subtotal;
     }
-    
-    
+
 }
