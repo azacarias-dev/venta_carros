@@ -21,31 +21,27 @@ public class MenuPrincipalController implements Initializable {
 
     private Main principal;
     @FXML
-    private Button btnRegresar, btnClientes, btnCompras, btnProductos;
-    
+    private Button btnRegresar, btnCompras;
+
     public void setPrincipal(Main principal) {
         this.principal = principal;
     }
-    
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-    
+    }
+
     @FXML
-    private void clickHandlerAction (ActionEvent evento){
-        if (evento.getSource() == btnRegresar){
-            principal.Inicio();
-        } else if (evento.getSource() == btnClientes){
-            principal.Clientes();
-        } else if (evento.getSource() == btnProductos){
-            principal.Productos();
-        } else if (evento.getSource() == btnCompras){
+    private void clickHandlerAction(ActionEvent evento) {
+        if (evento.getSource() == btnCompras) {
             principal.Compras();
+        } else if (evento.getSource() == btnRegresar){
+            principal.Inicio();
         }
     }
-    
+
 }

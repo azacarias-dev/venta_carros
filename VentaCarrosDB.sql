@@ -1,5 +1,5 @@
 -- Crear la base de datos
-drop database if exists VentaCarrosDB;
+-- drop database if exists VentaCarrosDB;
 create database VentaCarrosDB;
 use VentaCarrosDB;
 

@@ -60,7 +60,7 @@ public class ProductosController implements Initializable {
     @FXML
     private void clickHandlerAction(ActionEvent evento) {
         if (evento.getSource() == btnRegresar) {
-            principal.MenuPrincipal();
+            principal.MenuPrincipalAdmins();
         }
     }
 

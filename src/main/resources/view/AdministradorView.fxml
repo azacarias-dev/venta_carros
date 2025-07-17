@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="527.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="527.0" prefWidth="900.0" stylesheets="@ClientesView.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ventacarros.controller.AdministradorViewController">
 
     <!-- Top section -->
     <top>
@@ -64,9 +64,9 @@
             </padding>
             <children>
                 <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
-                    <TableView fx:id="tablaClientes" maxWidth="1000.0" HBox.hgrow="ALWAYS">
+                    <TableView fx:id="tablaAdmins" maxWidth="1000.0" HBox.hgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="colIdCliente" prefWidth="50.0" text="ID" />
+                            <TableColumn fx:id="colId" prefWidth="50.0" text="ID" />
                             <TableColumn fx:id="colNombre" prefWidth="85.0" text="NOMBRE" />
                             <TableColumn fx:id="colApellido" prefWidth="132.0" text="APELLIDO" />
                             <TableColumn fx:id="colTelefono" prefWidth="88.0" text="TELEFONO" />
