@@ -17,7 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import org.ventacarros.database.Conexion;
-import org.ventacarros.model.Cliente;
+import org.ventacarros.model.Administrador;
 import org.ventacarros.system.Main;
 
 /**
@@ -25,7 +25,7 @@ import org.ventacarros.system.Main;
  *
  * @author Zacarias
  */
-public class RegistroController implements Initializable {
+public class CrearCuentaAdminController implements Initializable {
 
     private Main principal;
 
@@ -33,7 +33,7 @@ public class RegistroController implements Initializable {
         this.principal = principal;
     }
 
-    private Cliente obtenerModelo;
+    private Administrador obtenerModelo;
 
     @FXML
     private TextField txtNombre, txtApellido, txtTelefono, txtCorreo, txtNit, txtContraseña;
@@ -54,21 +54,21 @@ public class RegistroController implements Initializable {
         principal.Inicio();
     }
 
-    private Cliente obtenerModeloClientes() {
+    private Administrador obtenerModelo() {
         String nombre = txtNombre.getText();
         String apellido = txtApellido.getText();
         String telefono = txtTelefono.getText();
         String correo = txtCorreo.getText();
         String nit = txtNit.getText();
         String cont = txtContraseña.getText();
-        Cliente cliente = new Cliente(nombre, apellido, telefono, correo, nit, cont);
-        return cliente;
+        Administrador administrador = new Administrador(nombre, apellido, telefono, correo, nit, cont);
+        return administrador;
     }
 
-    private void agregarClientes() {
-        obtenerModelo = obtenerModeloClientes();
+    private void agregar() {
+        obtenerModelo = obtenerModelo();
         try {
-            String SQL = "call sp_agregarClientes(?,?,?,?,?,?)";
+            String SQL = "call sp_agregarAdministradores(?,?,?,?,?,?)";
             CallableStatement enunciado = Conexion.getInstancia().getConexion().prepareCall(SQL);
             enunciado.setString(1, obtenerModelo.getNombre());
             enunciado.setString(2, obtenerModelo.getApellido());
@@ -113,7 +113,7 @@ public class RegistroController implements Initializable {
             timeline.setCycleCount(1);
             timeline.play();
         } else {
-            agregarClientes();
+            agregar();
             lblFelicidades.setText("¡Agregado con exito!");
             lblFelicidades.setTextFill(Color.GREEN);
             lblFelicidades.setVisible(true);

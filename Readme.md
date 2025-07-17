@@ -35,45 +35,45 @@ Aplicación de escritorio construida con Java y JavaFX que simula una tienda de 
 La aplicación depende de una base de datos llamada `VentaCarrosDB`. Puedes crearla con el siguiente script:
 
 ```sql
--- Crear la base de datos
 create database VentaCarrosDB;
 use VentaCarrosDB;
 
--- Tabla de Clientes
 create table Clientes(
-    idCliente int auto_increment,
-    nombre varchar(64) not null,
-    apellido varchar(64) not null,
-    telefono varchar(16) not null,
-    correo varchar(128) not null,
-    nit varchar(16) not null,
-    estado varchar(32) default "Activo",
+	idCliente int auto_increment,
+	nombre varchar (64) not null,
+	apellido varchar(64) not null,
+	telefono varchar (16) not null,
+	correo varchar(128) not null,
+	nit varchar(16) not null,
+	estado varchar(32) default "Activo",
     contraseña varchar(64) not null,
     constraint pk_clientes primary key (idCliente)
 );
 
--- Tabla de Productos
+
 create table Productos(
-    idProducto int auto_increment,
-    nombre varchar(60) not null,
-    precio decimal(10,2) not null,
-    descripcion varchar(80) not null,
-    stock int,
+	idProducto int auto_increment,
+	nombre varchar (60) not null,
+	precio decimal(10,2) not null,
+	descripcion varchar (80) not null,
+	stock int,
     estado varchar(32) default "Existente",
-    constraint pk_productos primary key (idProducto)
+	constraint pk_productos primary Key (idProducto)
 );
 
--- Tabla de Compras
 create table Compras(
-    idCompra int auto_increment,
+	idCompra int auto_increment,
+    idCliente int not null,
     fechaCompra date not null,
     idProducto int not null,
-    subtotal decimal(10,2) not null,
+    cantidad int not null,
+    subtotal decimal (10,2) not null,
     constraint pk_compras primary key (idCompra),
     constraint fk_compras_productos foreign key (idProducto)
-        references Productos(idProducto)
+		references Productos(idProducto),
+	constraint fk_compras_clientes foreign key (idCliente)
+		references Clientes(idCliente)
 );
-
 
 -- =================================== Procedimientos Almacenados==========================================
 -- ==========Clientes============
@@ -187,22 +187,38 @@ delimiter //
 delimiter ;
 
 -- ===================Compras============================
+
 delimiter //
-	create procedure sp_listarCompras()
+	create procedure sp_listarComprasPorCliente(in p_idCliente int)
 		begin
-			select *
-            from Compras;
-		end//
+			select
+				C.idCompra,
+                C.idCliente,
+                C.fechaCompra,
+                C.idProducto,
+                C.cantidad,
+                C.subtotal
+            from Compras C
+            where C.idCliente = p_idCliente;
+        end//
 delimiter ;
 
 delimiter //
 	create procedure sp_agregarCompras(
-		in p_fechaCompra date,
+        in p_idCliente int,
         in p_idProducto int,
-        in p_subtotal decimal(10,2))
+        in p_cantidad int)
 			begin
-					insert into Compras(fechaCompra, idProducto, subtotal)
-                    values(p_fechaCompra, p_idProducto, p_subtotal);
+				declare subtotalCalculado decimal(10,2);
+                declare precioUnitario decimal(10,2);
+
+                select precio into precioUnitario
+                from Productos P
+                where P.idProducto = p_idProducto;
+
+                set subtotalCalculado = precioUnitario * p_cantidad;
+					insert into Compras(idCliente, fechaCompra, idProducto, cantidad, subtotal)
+                    values(p_idCliente, current_date(), p_idProducto, p_cantidad, subtotalCalculado);
             end//
 delimiter ;
 
@@ -210,18 +226,108 @@ delimiter ;
 delimiter //
 	create procedure sp_actualizarCompras(
 		in p_idCompra int,
-		in p_fechaCompra date,
+        in p_idCliente int,
         in p_idProducto int,
-        in p_subtotal decimal(10,2))
+        in p_cantidad int)
 			begin
+				declare subtotalCalculado decimal(10,2);
+                declare precioUnitario decimal(10,2);
+
+                select precio into precioUnitario
+                from Productos P
+                where p.idProducto = p_idProducto;
+
+                set subtotalCalculado = precioUnitario * p_cantidad;
+
 				update Compras C
 					set
-						C.fechaCompra = p_fechaCompra ,
+						C.fechaCompra = current_date() ,
+                        C.idCliente = p_idCliente,
                         C.idProducto = p_idProducto ,
-                        C.subtotal = p_subtotal
+                        C.cantidad = p_cantidad,
+                        C.subtotal = subtotalCalculado
 					where C.idCompra = p_idCompra;
             end//
 delimiter ;
+
+delimiter //
+	create procedure sp_cancelarCompra(in p_idCompra int)
+		begin
+			delete from Compras C
+            where C.idCompra = p_idCompra;
+        end//
+delimiter ;
+
+
+-- ===========================Triggers==================================
+-- =================Restar stock comprado a Productos===================
+
+delimiter //
+	create trigger tr_productos_after_insert
+    after insert on Compras
+    for each row
+		begin
+			update Productos
+				set
+					stock = stock - new.cantidad
+				where idProducto = new.idProducto;
+        end//
+delimiter ;
+
+-- ===========Triger que limita la compra de productos si ya no hay stock===================
+
+delimiter //
+	create trigger tr_compras_before_insert
+    before insert on Compras
+    for each  row
+		begin
+			declare stockActual int;
+
+            select stock into stockActual
+            from Productos P
+            where p.idProducto = new.idProducto;
+
+            if stockActual <= 0 then
+				signal sqlstate '45000'
+                set message_text = 'Error: El producto no tiene suficiente stock.';
+			end if;
+        end//
+delimiter ;
+
+-- ======================Trigger que restaura stock despues de cancelar compra===================
+
+delimiter //
+	create trigger tr_productos_after_delete
+    after delete on Compras
+    for each row
+		begin
+			update Productos
+				set
+					stock = stock + old.cantidad
+				where idProducto = old.idProducto;
+        end//
+delimiter ;
+
+
+
+-- =================Productos por defecto=====================
+-- Inserción de 15 carros de ejemplo usando sp_agregarProductos
+
+call sp_agregarProductos('Toyota Corolla', 22500.00, 'Sedán compacto, eficiente y confiable', 15);
+call sp_agregarProductos('Honda Civic', 23800.00, 'Sedán deportivo con excelente rendimiento', 12);
+call sp_agregarProductos('Ford F-150', 35000.00, 'Camioneta robusta y potente para trabajo pesado', 8);
+call sp_agregarProductos('Tesla Model 3', 42000.00, 'Vehículo eléctrico de alto rendimiento y tecnología avanzada', 7);
+call sp_agregarProductos('BMW 3 Series', 45000.00, 'Sedán de lujo con diseño elegante y gran potencia', 5);
+call sp_agregarProductos('Mercedes-Benz C-Class', 48000.00, 'Sedán premium con confort y sofisticación', 6);
+call sp_agregarProductos('Hyundai Tucson', 28000.00, 'SUV compacto, versátil y con buen equipamiento', 10);
+call sp_agregarProductos('Kia Sportage', 27500.00, 'SUV moderno con estilo y gran espacio interior', 9);
+call sp_agregarProductos('Nissan Sentra', 20500.00, 'Sedán económico y confiable para el día a día', 18);
+call sp_agregarProductos('Chevrolet Silverado', 38000.00, 'Camioneta grande con gran capacidad de carga', 7);
+call sp_agregarProductos('Jeep Wrangler', 32000.00, 'SUV todoterreno icónico y aventurero', 4);
+call sp_agregarProductos('Subaru Outback', 30000.00, 'Crossover familiar, seguro y con tracción AWD', 11);
+call sp_agregarProductos('Mazda CX-5', 29000.00, 'SUV elegante con manejo dinámico y eficiente', 13);
+call sp_agregarProductos('Volkswagen Jetta', 21500.00, 'Sedán europeo con diseño clásico y confortable', 14);
+call sp_agregarProductos('Audi A4', 47000.00, 'Sedán de lujo con tecnología avanzada y rendimiento superior', 5);
 
 ```
 

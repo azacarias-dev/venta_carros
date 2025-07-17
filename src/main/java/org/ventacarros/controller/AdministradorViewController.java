@@ -21,28 +21,28 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.ventacarros.database.Conexion;
-import org.ventacarros.model.Cliente;
+import org.ventacarros.model.Administrador;
 import org.ventacarros.system.Main;
 
 /**
  * FXML Controller class
  *
- * @author jgome
+ * @author MIGUEL
  */
-public class ClientesVController implements Initializable {
+public class AdministradorViewController implements Initializable {
 
     @FXML
-    private TableView<Cliente> tablaClientes;
+    private TableView<Administrador> tablaAdmins;
     @FXML
-    private TableColumn colIdCliente, colNombre, colApellido,
+    private TableColumn colId, colNombre, colApellido,
             colTelefono, colCorreo, colNit, colEstado, colContraseña;
     @FXML
     private TextField txtId, txtNombre, txtApellido, txtTelefono, txtCorreo, txtNit, txtContraseña, txtBuscar;
     @FXML
     private Button btnNuevo, btnEditar, btnEliminar, btnCancelar, btnGuardar, btnBuscar, btnRegresar;
     private Main principal;
-    private ObservableList<Cliente> listaClientes;
-    private Cliente obtenerModelo;
+    private ObservableList<Administrador> listaAdmins;
+    private Administrador obtenerModelo;
 
     private enum acciones {
         NUEVO, EDITAR, ELIMINAR, NINGUNO
@@ -67,50 +67,50 @@ public class ClientesVController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarColumnas();
-        cargarTablaClientes();
-        tablaClientes.setOnMouseClicked(eventHandler -> cargarTablaEnTF());
+        cargarTabla();
+        tablaAdmins.setOnMouseClicked(eventHandler -> cargarTablaEnTF());
     }
 
     public void configurarColumnas() {
         //Formato de columnas
-        colIdCliente.setCellValueFactory(new PropertyValueFactory<Cliente, Integer>("id"));
-        colNombre.setCellValueFactory(new PropertyValueFactory<Cliente, String>("nombre"));
-        colApellido.setCellValueFactory(new PropertyValueFactory<Cliente, String>("apellido"));
-        colTelefono.setCellValueFactory(new PropertyValueFactory<Cliente, String>("telefono"));
-        colCorreo.setCellValueFactory(new PropertyValueFactory<Cliente, String>("correo"));
-        colNit.setCellValueFactory(new PropertyValueFactory<Cliente, String>("nit"));
-        colEstado.setCellValueFactory(new PropertyValueFactory<Cliente, String>("estado"));
-        colContraseña.setCellValueFactory(new PropertyValueFactory<Cliente, String>("contraseña"));
+        colId.setCellValueFactory(new PropertyValueFactory<Administrador, Integer>("id"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<Administrador, String>("nombre"));
+        colApellido.setCellValueFactory(new PropertyValueFactory<Administrador, String>("apellido"));
+        colTelefono.setCellValueFactory(new PropertyValueFactory<Administrador, String>("telefono"));
+        colCorreo.setCellValueFactory(new PropertyValueFactory<Administrador, String>("correo"));
+        colNit.setCellValueFactory(new PropertyValueFactory<Administrador, String>("nit"));
+        colEstado.setCellValueFactory(new PropertyValueFactory<Administrador, String>("estado"));
+        colContraseña.setCellValueFactory(new PropertyValueFactory<Administrador, String>("contraseña"));
     }
 
-    public void cargarTablaClientes() {
-        listaClientes = FXCollections.observableArrayList(listarClientes());
-        tablaClientes.setItems(listaClientes);
-        tablaClientes.getSelectionModel().selectFirst();
+    public void cargarTabla() {
+        listaAdmins = FXCollections.observableArrayList(listarAdmins());
+        tablaAdmins.setItems(listaAdmins);
+        tablaAdmins.getSelectionModel().selectFirst();
     }
 
     public void cargarTablaEnTF() {
-        Cliente clienteSeleccionado = tablaClientes.getSelectionModel().getSelectedItem();
-        if (clienteSeleccionado != null) {
-            txtId.setText(String.valueOf(clienteSeleccionado.getId()));
-            txtNombre.setText(clienteSeleccionado.getNombre());
-            txtApellido.setText(clienteSeleccionado.getApellido());
-            txtTelefono.setText(clienteSeleccionado.getTelefono());
-            txtCorreo.setText(clienteSeleccionado.getCorreo());
-            txtNit.setText(clienteSeleccionado.getNit());
-            txtContraseña.setText(clienteSeleccionado.getContraseña());
+        Administrador adminSeleccionado = tablaAdmins.getSelectionModel().getSelectedItem();
+        if (adminSeleccionado != null) {
+            txtId.setText(String.valueOf(adminSeleccionado.getId()));
+            txtNombre.setText(adminSeleccionado.getNombre());
+            txtApellido.setText(adminSeleccionado.getApellido());
+            txtTelefono.setText(adminSeleccionado.getTelefono());
+            txtCorreo.setText(adminSeleccionado.getCorreo());
+            txtNit.setText(adminSeleccionado.getNit());
+            txtContraseña.setText(adminSeleccionado.getContraseña());
         }
     }
 
-    public ArrayList<Cliente> listarClientes() {
-        ArrayList<Cliente> clientes = new ArrayList<>();
+    public ArrayList<Administrador> listarAdmins() {
+        ArrayList<Administrador> administrador = new ArrayList<>();
         try {
-            String sql = "call sp_listarClientes();";
+            String sql = "call sp_listarAdministradores();";
             CallableStatement enunciado = Conexion.getInstancia().getConexion().prepareCall(sql);
             ResultSet rs = enunciado.executeQuery();
             while (rs.next()) {
                 //verdadero
-                clientes.add(new Cliente(
+                administrador.add(new Administrador(
                         rs.getInt(1),
                         rs.getString(2),
                         rs.getString(3),
@@ -120,15 +120,15 @@ public class ClientesVController implements Initializable {
                         rs.getString(7),
                         rs.getString(8)));
             }
-            return clientes;
+            return administrador;
         } catch (SQLException ex) {
             System.out.println("Error al listar los clientes" + ex.getSQLState());
             ex.printStackTrace();
         }
-        return clientes;
+        return administrador;
     }
 
-    private Cliente obtenerModeloClientes() {
+    private Administrador obtenerModeloAdmins() {
         int id;
         if (txtId.getText().isEmpty()) {
             id = 1;
@@ -141,14 +141,14 @@ public class ClientesVController implements Initializable {
         String correo = txtCorreo.getText();
         String nit = txtNit.getText();
         String cont = txtContraseña.getText();
-        Cliente cliente = new Cliente(id, nombre, apellido, telefono, correo, nit, cont);
-        return cliente;
+        Administrador administrador = new Administrador(id, nombre, apellido, telefono, correo, nit, cont);
+        return administrador;
     }
 
-    private void agregarClientes() {
-        obtenerModelo = obtenerModeloClientes();
+    private void agregarAdmins() {
+        obtenerModelo = obtenerModeloAdmins();
         try {
-            String SQL = "call sp_agregarClientes(?,?,?,?,?,?)";
+            String SQL = "call sp_agregarAdministradores(?,?,?,?,?,?)";
             CallableStatement enunciado = Conexion.getInstancia().getConexion().prepareCall(SQL);
             enunciado.setString(1, obtenerModelo.getNombre());
             enunciado.setString(2, obtenerModelo.getApellido());
@@ -157,17 +157,17 @@ public class ClientesVController implements Initializable {
             enunciado.setString(5, obtenerModelo.getNit());
             enunciado.setString(6, obtenerModelo.getContraseña());
             enunciado.execute();
-            cargarTablaClientes();
+            cargarTabla();
         } catch (SQLException e) {
             System.out.println("Error al agregar");
             e.printStackTrace();
         }
     }
 
-    private void actualizarClientes() {
-        obtenerModelo = obtenerModeloClientes();
+    private void actualizarAdmins() {
+        obtenerModelo = obtenerModeloAdmins();
         try {
-            String SQL = "call sp_actualizarClientes(?,?,?,?,?,?,?)";
+            String SQL = "call sp_actualizarAdministradores(?,?,?,?,?,?,?)";
             CallableStatement enunciado = Conexion.getInstancia().getConexion().prepareCall(SQL);
             enunciado.setInt(1, obtenerModelo.getId());
             enunciado.setString(2, obtenerModelo.getNombre());
@@ -177,21 +177,21 @@ public class ClientesVController implements Initializable {
             enunciado.setString(6, obtenerModelo.getNit());
             enunciado.setString(7, obtenerModelo.getContraseña());
             enunciado.execute();
-            cargarTablaClientes();
+            cargarTabla();
         } catch (SQLException e) {
             System.out.println("Error al actualizar");
             e.printStackTrace();
         }
     }
 
-    private void eliminarClientes() {
-        obtenerModelo = obtenerModeloClientes();
+    private void eliminarAdmins() {
+        obtenerModelo = obtenerModeloAdmins();
         try {
-            String SQL = "call sp_eliminarClientes(?)";
+            String SQL = "call sp_eliminarAdministradores(?)";
             CallableStatement enunciado = Conexion.getInstancia().getConexion().prepareCall(SQL);
             enunciado.setInt(1, obtenerModelo.getId());
             enunciado.execute();
-            cargarTablaClientes();
+            cargarTabla();
         } catch (SQLException e) {
             System.out.println("Error al eliminar");
             e.printStackTrace();
@@ -258,28 +258,28 @@ public class ClientesVController implements Initializable {
     private void guardar() {
         deshabilitarNodos();
         if (tipoAccion == acciones.NUEVO) {
-            agregarClientes();
+            agregarAdmins();
             tipoAccion = acciones.NINGUNO;
         } else if (tipoAccion == acciones.EDITAR) {
-            actualizarClientes();
+            actualizarAdmins();
             tipoAccion = acciones.EDITAR;
         } else if (tipoAccion == acciones.ELIMINAR) {
-            eliminarClientes();
+            eliminarAdmins();
             tipoAccion = acciones.ELIMINAR;
         }
     }
 
     @FXML
     private void buscar() {
-        ArrayList<Cliente> resultadoBusqueda = new ArrayList<>();
+        ArrayList<Administrador> resultadoBusqueda = new ArrayList<>();
         String nombreCompleto = txtBuscar.getText();
-        for (Cliente c : listaClientes) {
-            if (c.getNombre().toLowerCase().contains(nombreCompleto.toLowerCase())
-                    || c.getApellido().toLowerCase().contains(nombreCompleto)) {
-                resultadoBusqueda.add(c);
-                tablaClientes.setItems(FXCollections.observableArrayList(resultadoBusqueda));
+        for (Administrador a : listaAdmins) {
+            if (a.getNombre().toLowerCase().contains(nombreCompleto.toLowerCase())
+                    || a.getApellido().toLowerCase().contains(nombreCompleto)) {
+                resultadoBusqueda.add(a);
+                tablaAdmins.setItems(FXCollections.observableArrayList(resultadoBusqueda));
                 if (resultadoBusqueda.isEmpty()) {
-                    tablaClientes.getSelectionModel().selectFirst();
+                    tablaAdmins.getSelectionModel().selectFirst();
                 }
             }
         }

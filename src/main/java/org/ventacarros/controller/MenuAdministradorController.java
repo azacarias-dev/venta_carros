@@ -15,13 +15,13 @@ import org.ventacarros.system.Main;
 /**
  * FXML Controller class
  *
- * @author jgome
+ * @author MIGUEL
  */
-public class MenuPrincipalController implements Initializable {
+public class MenuAdministradorController implements Initializable {
 
     private Main principal;
     @FXML
-    private Button btnRegresar, btnCompras;
+    private Button btnRegresar, btnClientes, btnAdmins, btnProductos;
 
     public void setPrincipal(Main principal) {
         this.principal = principal;
@@ -37,10 +37,14 @@ public class MenuPrincipalController implements Initializable {
 
     @FXML
     private void clickHandlerAction(ActionEvent evento) {
-        if (evento.getSource() == btnCompras) {
-            principal.Compras();
-        } else if (evento.getSource() == btnRegresar){
+        if (evento.getSource() == btnRegresar) {
             principal.Inicio();
+        } else if (evento.getSource() == btnClientes) {
+            principal.Clientes();
+        } else if (evento.getSource() == btnProductos) {
+            principal.Productos();
+        } else if (evento.getSource() == btnAdmins) {
+            principal.Admins();
         }
     }
 

@@ -17,6 +17,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -40,21 +41,20 @@ public class ComprasController implements Initializable {
     private ObservableList<Productos> listaProductos;
     private Compras modelo;
     private Main principal;
+    private int idCliente;
 
     private enum acciones {
-        AGREGAR, EDITAR, ELIMINAR, NINGUNA;
+        AGREGAR, EDITAR, CANCELAR, NINGUNA;
     }
     private acciones tipoAccion = acciones.NINGUNA;
     @FXML
     private TableView<Compras> tablaCompras;
     @FXML
-    private Button btnRegresar, btnNuevo, btnEditar, btnGuardar, btnCancelar, btnBuscar;
+    private Button btnRegresar, btnNuevo, btnEditar, btnGuardar, btnCancelar, btnBuscar, btnEliminar;
     @FXML
-    private TextField txtId, txtBuscar, txtSubtotal;
+    private TextField txtId, txtBuscar, txtCantidad;
     @FXML
-    private DatePicker dpFechaCompra;
-    @FXML
-    private TableColumn colId, colFecha, colIdProducto, colSubtotal;
+    private TableColumn colId, colFecha, colIdProducto, colCantidad, colSubtotal;
     @FXML
     private ComboBox<Productos> cbxProductos;
 
@@ -62,12 +62,13 @@ public class ComprasController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         configurarCasillas();
         cargarProductosAComboBox();
-        cargarTabla();
         tablaCompras.setOnMouseClicked(eventHandler -> cargarEnTextField());
     }
 
     public void setPrincipal(Main principal) {
         this.principal = principal;
+        this.idCliente = principal.getClienteActivo().getId();
+        cargarTabla();
     }
 
     @FXML
@@ -78,17 +79,20 @@ public class ComprasController implements Initializable {
         }
     }
 
-    private ArrayList<Compras> listarCOmpras() {
+    private ArrayList<Compras> listarCompras() {
         ArrayList<Compras> compras = new ArrayList<>();
         try {
-            CallableStatement enunciado = Conexion.getInstancia().getConexion().prepareCall("call sp_listarCompras();");
+            CallableStatement enunciado = Conexion.getInstancia().getConexion().prepareCall("call sp_listarComprasPorCliente(?);");
+            enunciado.setInt(1, idCliente);
             ResultSet resultado = enunciado.executeQuery();
             while (resultado.next()) {
                 compras.add(new Compras(
                         resultado.getInt(1),
-                        resultado.getDate(2).toLocalDate(),
-                        resultado.getInt(3),
-                        resultado.getDouble(4)));
+                        resultado.getInt(2),
+                        resultado.getDate(3).toLocalDate(),
+                        resultado.getInt(4),
+                        resultado.getInt(5),
+                        resultado.getDouble(6)));
             }
             return compras;
         } catch (SQLException e) {
@@ -97,7 +101,6 @@ public class ComprasController implements Initializable {
         }
         return compras;
     }
-
 
     private ArrayList<Productos> obtenerModeloProductos() {
         ArrayList<Productos> productos = new ArrayList<>();
@@ -127,7 +130,7 @@ public class ComprasController implements Initializable {
         int id = txtId.getText().isEmpty() ? 0 : Integer.parseInt(txtId.getText());
         Productos productoSeleccionado = cbxProductos.getSelectionModel().getSelectedItem();
         int idProducto = productoSeleccionado != null ? productoSeleccionado.getId() : 0;
-        return new Compras(id, dpFechaCompra.getValue(), idProducto,Double.parseDouble(txtSubtotal.getText()));
+        return new Compras(id, idCliente, idProducto, Integer.parseInt(txtCantidad.getText()));
     }
 
     private void cargarProductosAComboBox() {
@@ -139,11 +142,12 @@ public class ComprasController implements Initializable {
         colId.setCellValueFactory(new PropertyValueFactory<Compras, Integer>("id"));
         colFecha.setCellValueFactory(new PropertyValueFactory<Compras, LocalDate>("fechaCompra"));
         colIdProducto.setCellValueFactory(new PropertyValueFactory<Compras, Integer>("idProducto"));
-        colSubtotal.setCellValueFactory(new PropertyValueFactory<Compras, Integer>("subtotal"));
+        colSubtotal.setCellValueFactory(new PropertyValueFactory<Compras, Double>("subtotal"));
+        colCantidad.setCellValueFactory(new PropertyValueFactory<Compras, Integer>("cantidad"));
     }
 
     private void cargarTabla() {
-        listaCompras = FXCollections.observableArrayList(listarCOmpras());
+        listaCompras = FXCollections.observableArrayList(listarCompras());
         tablaCompras.setItems(listaCompras);
         tablaCompras.getSelectionModel().selectFirst();
         cargarEnTextField();
@@ -153,8 +157,7 @@ public class ComprasController implements Initializable {
         Compras compraSeleecionada = tablaCompras.getSelectionModel().getSelectedItem();
         if (compraSeleecionada != null) {
             txtId.setText(String.valueOf(compraSeleecionada.getId()));
-            txtSubtotal.setText((String.valueOf(compraSeleecionada.getSubtotal())));
-            dpFechaCompra.setValue(compraSeleecionada.getFechaCompra());    
+            txtCantidad.setText((String.valueOf(compraSeleecionada.getCantidad())));
             for (Productos p : cbxProductos.getItems()) {
                 if (p.getId() == compraSeleecionada.getIdProducto()) {
                     cbxProductos.setValue(p);
@@ -168,15 +171,27 @@ public class ComprasController implements Initializable {
         modelo = obtenerModelo();
         try {
             CallableStatement enunciado = Conexion.getInstancia().getConexion().prepareCall("call sp_agregarCompras(?,?,?);");
-            enunciado.setDate(1, Date.valueOf(modelo.getFechaCompra()));
+            enunciado.setInt(1, idCliente);
             enunciado.setInt(2, modelo.getIdProducto());
-            enunciado.setDouble(3, modelo.getSubtotal());
+            enunciado.setInt(3, modelo.getCantidad());
             enunciado.executeUpdate();
             cargarTabla();
         } catch (SQLException e) {
-            System.out.println("Error al agregar la compra");
-            e.printStackTrace();
+            if (e.getMessage().contains("no tiene suficiente stock")) {
+                mostrarAlerta("Stock Insuficiente", "Lo sentimos este producto no cuenta ya con existencias");
+            } else {
+                mostrarAlerta("ERROR;", e.getMessage());
+            }
         }
+    }
+
+    private void mostrarAlerta(String titulo, String mensaje) {
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensaje);
+        alerta.initOwner(principal.getEscenarioPrincipal());
+        alerta.showAndWait();
     }
 
     private void editarCompra() {
@@ -184,13 +199,26 @@ public class ComprasController implements Initializable {
         try {
             CallableStatement enunciado = Conexion.getInstancia().getConexion().prepareCall("call sp_actualizarCompras(?,?,?,?);");
             enunciado.setInt(1, modelo.getId());
-            enunciado.setDate(2, Date.valueOf(modelo.getFechaCompra()));
+            enunciado.setInt(2, idCliente);
             enunciado.setInt(3, modelo.getIdProducto());
-            enunciado.setDouble(4, modelo.getSubtotal());
+            enunciado.setInt(4, modelo.getCantidad());
             enunciado.execute();
             cargarTabla();
         } catch (SQLException e) {
             System.out.println("Error al actualizar la compra");
+            e.printStackTrace();
+        }
+    }
+    
+    private void eliminarCompra(){
+        modelo = obtenerModelo();
+        try {
+            CallableStatement enunciado = Conexion.getInstancia().getConexion().prepareCall("call sp_cancelarCompra(?);");
+            enunciado.setInt(1, modelo.getId());
+            enunciado.execute();
+            cargarTabla();
+        } catch (SQLException e) {
+            System.out.println("Error al cancelar la compra");
             e.printStackTrace();
         }
     }
@@ -211,14 +239,12 @@ public class ComprasController implements Initializable {
 
     private void limpiarTextField() {
         cbxProductos.setValue(null);
-        dpFechaCompra.setValue(null);
-        txtSubtotal.clear();
+        txtCantidad.clear();
     }
 
     private void cambiarEstado(boolean estado) {
         cbxProductos.setDisable(estado);
-        dpFechaCompra.setDisable(estado);
-        txtSubtotal.setDisable(estado);
+        txtCantidad.setDisable(estado);
     }
 
     private void deshabilitar() {
@@ -226,6 +252,7 @@ public class ComprasController implements Initializable {
         cambiarEstado(!descativado);
         btnNuevo.setDisable(descativado);
         btnEditar.setDisable(descativado);
+        btnEliminar.setDisable(descativado);
         btnCancelar.setDisable(!descativado);
         btnGuardar.setDisable(!descativado);
     }
@@ -242,6 +269,13 @@ public class ComprasController implements Initializable {
         deshabilitar();
         tipoAccion = acciones.EDITAR;
     }
+    
+    @FXML
+    private void btnEliminar(){
+        deshabilitar();
+        tipoAccion = acciones.CANCELAR;
+    }
+
     @FXML
     private void btnGuardar() {
         if (tipoAccion == acciones.AGREGAR) {
@@ -249,6 +283,9 @@ public class ComprasController implements Initializable {
             tipoAccion = acciones.NINGUNA;
         } else if (tipoAccion == acciones.EDITAR) {
             editarCompra();
+            tipoAccion = acciones.NINGUNA;
+        } else if (tipoAccion == acciones.CANCELAR){
+            eliminarCompra();
             tipoAccion = acciones.NINGUNA;
         }
     }

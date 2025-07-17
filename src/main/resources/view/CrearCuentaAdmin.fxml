@@ -13,13 +13,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane styleClass="border-pane" stylesheets="@registroview.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ventacarros.controller.RegistroController">
+<BorderPane styleClass="border-pane" stylesheets="@registroview.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ventacarros.controller.CrearCuentaAdminController">
    <top>
       <VBox alignment="BOTTOM_CENTER" prefHeight="192.0" prefWidth="314.0" spacing="10.0" BorderPane.alignment="BOTTOM_CENTER" VBox.vgrow="NEVER">
          <children>
             <HBox alignment="CENTER" prefHeight="117.0" prefWidth="314.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label fx:id="labelTitulo" alignment="BOTTOM_CENTER" prefHeight="87.0" prefWidth="283.0" text="Registro de">
+                  <Label fx:id="labelTitulo" alignment="BOTTOM_CENTER" prefHeight="87.0" prefWidth="326.0" text="Crear Cuenta">
                      <font>
                         <Font name="System Bold" size="48.0" />
                      </font>
@@ -28,7 +28,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="105.0" prefWidth="314.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label fx:id="labelTitulo" alignment="BOTTOM_CENTER" prefHeight="67.0" prefWidth="279.0" text="Sport Carts">
+                  <Label fx:id="labelTitulo" alignment="BOTTOM_CENTER" prefHeight="67.0" prefWidth="279.0" text="ADMIN">
                      <font>
                         <Font name="System Bold" size="48.0" />
                      </font>
